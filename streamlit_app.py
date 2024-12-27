@@ -31,7 +31,7 @@ def load_ner_model():
 # ------------------------------
 # Transcription Logic
 # ------------------------------
-def transcribe_audio(uploaded_file, whisper_pipeline):
+def transcribe_audio(uploaded_file):
     """
     Transcribe audio into text using the Whisper model.
     Args:
@@ -40,7 +40,8 @@ def transcribe_audio(uploaded_file, whisper_pipeline):
         str: Transcribed text from the audio file.
     """
     print("Transcribing audio...")
-    transcription = whisper_pipeline(uploaded_file)
+    whisper = load_whisper_model()
+    transcription = whisper(uploaded_file)
     print("Transcription done!")
     return transcription['text']
 
@@ -134,8 +135,7 @@ def main():
     uploaded_file = st.file_uploader("Upload an audio file (.wav format)", type = ".wav")
     if uploaded_file is not None:
         st.info("Please wait, the transcription may take time.")
-        whisper = load_whisper_model()
-        transcription = transcribe_audio(uploaded_file.getvalue(), whisper)
+        transcription = transcribe_audio(uploaded_file.getvalue())
         st.success("Transcription completed!")
 
         st.divider()
