@@ -11,7 +11,7 @@ def load_whisper_model():
     Load the Whisper model for audio transcription.
     """
     print("Loading the Whisper model...")
-    whisper = pipeline("automatic-speech-recognition", "openai/whisper-tiny", chunk_length_s = 30)
+    whisper = pipeline("automatic-speech-recognition", "openai/whisper-tiny")
     print("Whisper model loaded!")
     return whisper
 
@@ -41,7 +41,7 @@ def transcribe_audio(uploaded_file):
     """
     print("Transcribing audio...")
     whisper = load_whisper_model()
-    transcription = whisper(uploaded_file)
+    transcription = whisper(uploaded_file, return_timestamps = True)
     print("Transcription done!")
     return transcription['text']
 
