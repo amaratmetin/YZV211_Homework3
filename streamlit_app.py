@@ -10,7 +10,7 @@ def load_whisper_model():
     """
     Load the Whisper model for audio transcription.
     """
-    devide = "cuda:0" if torch.cuda.is_available() else "cpu"
+    device = "cuda:0" if torch.cuda.is_available() else "cpu"
     whisper = pipeline("automatic-speech-recognition", "openai/whisper-tiny", torch_dtype=torch.float16, device=device)
     return whisper
 
