@@ -10,7 +10,9 @@ def load_whisper_model():
     """
     Load the Whisper model for audio transcription.
     """
+    print("Loading the Whisper model...")
     whisper = pipeline("automatic-speech-recognition", "openai/whisper-tiny", chunk_length_s = 30)
+    print("Whisper model loaded!")
     return whisper
 
 # ------------------------------
@@ -21,7 +23,9 @@ def load_ner_model():
     """
     Load the Named Entity Recognition (NER) model pipeline.
     """
+    print("Loading BERT...")
     ner = pipeline("ner", model = "dslim/bert-base-NER", tokenizer = "dslim/bert-base-NER")
+    print("BERT loaded!")
     return ner
 
 # ------------------------------
@@ -35,7 +39,9 @@ def transcribe_audio(uploaded_file, whisper_pipeline):
     Returns:
         str: Transcribed text from the audio file.
     """
-    transcription = whisper_pipeline(uploaded_file, batch_size = 8, return_timestamps = True)
+    print("Transcribing audio...")
+    transcription = whisper_pipeline(uploaded_file)
+    print("Transcription done!")
     return transcription['text']
 
 # ------------------------------
@@ -50,6 +56,7 @@ def extract_entities(text, ner_pipeline):
     Returns:
         tuple: Lists of entity words per their groups(PERs, ORGs and LOCs).
     """
+    print("Extracting entities...")
     results = ner_pipeline(text)
     per_set = set()
     org_set = set()
@@ -102,7 +109,7 @@ def extract_entities(text, ner_pipeline):
         names.append(per)
 
 
-
+    print("Entities extracted!")
     return (real_per_list, list(org_set), list(loc_set))
             
 
@@ -128,30 +135,30 @@ def main():
     if uploaded_file is not None:
         st.info("Please wait, the transcription may take time.")
         whisper = load_whisper_model()
-        transcription = transcribe_audio(uploaded_file.getvalue(), whisper)
+        transcription = transcribe_audio(uploaded_file, whisper)
         st.success("Transcription completed!")
 
-    st.divider()
-
-    st.header("Transcription")
-    st.write(transcription)
-
-    st.divider()
-
-    ner = load_ner_model()
-    entities = extract_entities(transcription, ner)
-    #print(entities)
-
-    st.header("Extracted Entities")
-    st.subheader("Persons(PERs)")
-    for word in entities[0]:
-        st.write("* " + word)
-    st.subheader("Organisations(ORGs)")
-    for word in entities[1]:
-        st.write("* " + word)
-    st.subheader("Locations(LOCs)")
-    for word in entities[2]:
-        st.write("* " + word)
+        st.divider()
+    
+        st.header("Transcription")
+        st.write(transcription)
+    
+        st.divider()
+    
+        ner = load_ner_model()
+        entities = extract_entities(transcription, ner)
+        #print(entities)
+    
+        st.header("Extracted Entities")
+        st.subheader("Persons(PERs)")
+        for word in entities[0]:
+            st.write("* " + word)
+        st.subheader("Organisations(ORGs)")
+        for word in entities[1]:
+            st.write("* " + word)
+        st.subheader("Locations(LOCs)")
+        for word in entities[2]:
+            st.write("* " + word)
 
 if __name__ == "__main__":
     main()
