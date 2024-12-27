@@ -41,7 +41,7 @@ def transcribe_audio(uploaded_file):
     """
     print("Transcribing audio...")
     whisper = load_whisper_model()
-    transcription = whisper(uploaded_file, return_timestamps = True)
+    transcription = whisper(uploaded_file)
     print("Transcription done!")
     return transcription['text']
 
