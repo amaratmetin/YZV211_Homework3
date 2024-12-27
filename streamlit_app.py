@@ -40,7 +40,7 @@ def transcribe_audio(uploaded_file, whisper_pipeline):
         str: Transcribed text from the audio file.
     """
     print("Transcribing audio...")
-    transcription = whisper_pipeline(uploaded_file)
+    transcription = whisper_pipeline(uploaded_file.getvalue())
     print("Transcription done!")
     return transcription['text']
 
