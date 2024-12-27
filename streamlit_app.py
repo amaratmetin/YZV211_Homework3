@@ -38,7 +38,7 @@ def transcribe_audio(uploaded_file, whisper_pipeline):
         str: Transcribed text from the audio file.
     """
     print("Transcribing audio...")
-    transcription = whisper_pipeline(uploaded_file.getvalue())
+    transcription = whisper_pipeline(uploaded_file)
     print("Transcription done!")
     return transcription['text']
 
@@ -133,7 +133,7 @@ def main():
     if uploaded_file is not None:
         st.info("Please wait, the transcription may take time.")
         whisper = load_whisper_model()
-        transcription = transcribe_audio(uploaded_file, whisper)
+        transcription = transcribe_audio(uploaded_file.getvalue(), whisper)
         st.success("Transcription completed!")
 
         st.divider()
