@@ -135,6 +135,7 @@ def main():
     uploaded_file = st.file_uploader("Upload an audio file (.wav format)", type = ".wav")
     if uploaded_file is not None:
         st.info("Please wait, the transcription may take time.")
+       
         transcription = transcribe_audio(uploaded_file.getvalue())
         st.success("Transcription completed!")
 
