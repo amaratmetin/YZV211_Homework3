@@ -5,6 +5,7 @@ import torch
 # ------------------------------
 # Load Whisper Model
 # ------------------------------
+@st.cache_resource
 def load_whisper_model():
     """
     Load the Whisper model for audio transcription.
@@ -17,6 +18,7 @@ def load_whisper_model():
 # ------------------------------
 # Load NER Model
 # ------------------------------
+@st.cache_resource
 def load_ner_model():
     """
     Load the Named Entity Recognition (NER) model pipeline.
