@@ -129,7 +129,7 @@ def main():
     if uploaded_file is not None:
         st.info("Please wait, the transcription may take time.")
         whisper = load_whisper_model()
-        transcription = transcribe_audio(uploaded_file.name, whisper)
+        transcription = transcribe_audio(uploaded_file.getvalue(), whisper)
         st.success("Transcription completed!")
 
     st.divider()
